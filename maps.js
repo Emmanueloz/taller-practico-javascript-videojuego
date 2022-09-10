@@ -4,10 +4,10 @@
 */
 
 const emojis = {
-  '-': ' ',
-  'O': '🚪',
-  'X': '💣',
-  'I': '🎁',
+  '-': ' ',//Espacios en blanco
+  'O': '🚪',//Puertas a mas niveles
+  'X': '💣',//Bombas, Obstáculos
+  'I': '🎁',//Premios
   'PLAYER': '💀',
   'BOMB_COLLISION': '🔥',
   'GAME_OVER': '👎',
