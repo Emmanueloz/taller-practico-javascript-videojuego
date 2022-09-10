@@ -25,10 +25,10 @@ function setCanvasSize() {
 function startGame() {
   console.log({ canvasSize, elementsSize });
 
-  game.font = `${elementsSize}px Verdana`;
-  game.textAlign = "end";
+  game.font = `${elementsSize}px Verdana`;//Tamaño del emoji del tamaño del cuadrado
+  game.textAlign = "end"; //Alineación del emoji
 
-  const map = maps[1];
+  const map = maps[0];
   const mapRows = map.trim().split("\n");
   const mapRowCols = mapRows.map((row) => row.trim().split(""));
   /* .trim es una función que funciona en stings para 
