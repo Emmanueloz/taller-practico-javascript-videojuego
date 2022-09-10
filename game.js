@@ -25,19 +25,28 @@ function setCanvasSize() {
 function startGame() {
   console.log({ canvasSize, elementsSize });
 
-  game.font = elementsSize + "px Verdana";
+  game.font = `${elementsSize}px Verdana`;
   game.textAlign = "end";
 
-  for (let i = 1; i <= 10; i++) {//Cambia de columna
-    console.log(i);
-    for (let j = 1; j <= 10; j++) {//Llena la columna
-      game.fillText(emojis["X"], elementsSize * i + 5, elementsSize * j);
-      console.log(j);
+  const map = maps[1];
+  const mapRows = map.trim().split("\n");
+  const mapRowCols = mapRows.map((row) => row.trim().split(""));
+  /* .trim es una función que funciona en stings para 
+  quitar espacios, split es para crear un array de arrays 
+  de un string dividiendo por algún carácter en este casa 
+  el "\n" que es un salto de linea */
+  console.log(mapRows, mapRowCols);
+
+  for (let row = 1; row <= 10; row++) {
+    //Cambia de fila
+    for (let col = 1; col <= 10; col++) {
+      //Llena la fila
+      game.fillText(emojis[mapRowCols[row - 1][col - 1]], elementsSize * col + 8, elementsSize * row - 8);
       /*Al ejecutar el primer bucle y seguido el bucle anidado,
-      conservamos del primer valor del bucle que la i, 
+      conservamos del primer valor del bucle que la row, 
       para luego ejecutar mas veces el segundo bucle hasta llenar
       la columna y al terminar empieza ejecutar el 
-      primer bucle cambiando el valor de i y con ello cambiar la
+      primer bucle cambiando el valor de row y con ello cambiar la
       columna a llenar  */
     }
   }
