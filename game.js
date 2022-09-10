@@ -25,29 +25,40 @@ function setCanvasSize() {
 function startGame() {
   console.log({ canvasSize, elementsSize });
 
-  game.font = `${elementsSize}px Verdana`;//Tamaño del emoji del tamaño del cuadrado
+  game.font = `${elementsSize}px Verdana`; //Tamaño del emoji del tamaño del cuadrado
   game.textAlign = "end"; //Alineación del emoji
 
-  const map = maps[0];
-  const mapRows = map.trim().split("\n");
-  const mapRowCols = mapRows.map((row) => row.trim().split(""));
+  const map = maps[0]; //Mapa seleccionado
+  const mapRows = map.trim().split("\n"); //Filas del Mapa
+  const mapRowCols = mapRows.map((row) => row.trim().split("")); //Array de arrays fila, elemento de la fila
   /* .trim es una función que funciona en stings para 
-  quitar espacios, split es para crear un array de arrays 
-  de un string dividiendo por algún carácter en este casa 
+  quitar espacios, split es para crear un array a partir de 
+  un string dividiendo por algún carácter en este casa 
   el "\n" que es un salto de linea */
   console.log(mapRows, mapRowCols);
 
-  for (let row = 1; row <= 10; row++) {
+  //Recorremos el array para dibujarlo en el canvas
+  mapRowCols.forEach((row, rowI) => {//primer forEach nos da el array de cada fila
+    row.forEach((col, colI) => {//El segundo for Each nos da cada elemento dentro de la fila que usamos para guardarla en una variable
+      const emoji = emojis[col];
+      const posX = elementsSize * (colI + 1)//Posición en x
+      const posY = elementsSize * (rowI + 1)//Posición en y
+      game.fillText(emoji, posX, posY);
+      //console.log({row, colI, col,rowI});
+    });
+  });
+
+  /*for (let row = 1; row <= 10; row++) {
     //Cambia de fila
     for (let col = 1; col <= 10; col++) {
       //Llena la fila
       game.fillText(emojis[mapRowCols[row - 1][col - 1]], elementsSize * col + 8, elementsSize * row - 8);
-      /*Al ejecutar el primer bucle y seguido el bucle anidado,
+      //Al ejecutar el primer bucle y seguido el bucle anidado,
       conservamos del primer valor del bucle que la row, 
       para luego ejecutar mas veces el segundo bucle hasta llenar
       la columna y al terminar empieza ejecutar el 
       primer bucle cambiando el valor de row y con ello cambiar la
-      columna a llenar  */
+      columna a llenar  
     }
-  }
+  }*/
 }
