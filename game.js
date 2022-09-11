@@ -8,6 +8,11 @@ const btnDown = document.querySelector("#down");
 let canvasSize;
 let elementsSize;
 
+const playerPosition = {
+  x: undefined,
+  y: undefined,
+};
+
 window.addEventListener("load", setCanvasSize); //cuando termine de cargar
 window.addEventListener("resize", setCanvasSize); // nuevo tamaño de pantalla
 
@@ -49,24 +54,22 @@ function startGame() {
       const emoji = emojis[col];
       const posX = elementsSize * (colI + 1); //Posición en x
       const posY = elementsSize * (rowI + 1); //Posición en y
+
+      if (playerPosition.x == undefined &&col == "O") {
+        playerPosition.x = posX;
+        playerPosition.y = posY;
+      }
+
       game.fillText(emoji, posX, posY);
       //console.log({row, colI, col,rowI});
     });
   });
 
-  /*for (let row = 1; row <= 10; row++) {
-    //Cambia de fila
-    for (let col = 1; col <= 10; col++) {
-      //Llena la fila
-      game.fillText(emojis[mapRowCols[row - 1][col - 1]], elementsSize * col + 8, elementsSize * row - 8);
-      //Al ejecutar el primer bucle y seguido el bucle anidado,
-      conservamos del primer valor del bucle que la row, 
-      para luego ejecutar mas veces el segundo bucle hasta llenar
-      la columna y al terminar empieza ejecutar el 
-      primer bucle cambiando el valor de row y con ello cambiar la
-      columna a llenar  
-    }
-  }*/
+  movePlayer()
+}
+
+function movePlayer() {
+  game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
 }
 
 window.addEventListener("keydown", moveByKeys);
@@ -83,7 +86,9 @@ function moveByKeys(event) {
 }
 
 function moveUp() {
-  console.log("Arriba");
+  playerPosition.y -= elementsSize
+  movePlayer()
+  setCanvasSize()
 }
 
 function moveLeft() {
