@@ -12,6 +12,10 @@ const playerPosition = {
   x: undefined,
   y: undefined,
 };
+const giftPosition = {
+  x: undefined,
+  y: undefined,
+};
 
 window.addEventListener("load", setCanvasSize); //cuando termine de cargar
 window.addEventListener("resize", setCanvasSize); // nuevo tamaño de pantalla
@@ -64,6 +68,9 @@ function startGame() {
           playerPosition.y = posY;
           console.log(playerPosition, elementsSize);
         }
+      } else if (col == "I") {
+        giftPosition.x = posX;
+        giftPosition.y = posY;
       }
 
       game.fillText(emoji, posX, posY);
@@ -75,6 +82,16 @@ function startGame() {
 }
 
 function movePlayer() {
+  const giftCollisionX =
+    playerPosition.x.toFixed(3) == giftPosition.x.toFixed(3);
+  const giftCollisionY =
+    playerPosition.y.toFixed(3) == giftPosition.y.toFixed(3);
+  const giftCollision = giftCollisionX && giftCollisionY;
+
+  if (giftCollision) {
+    console.log("Subiste de nivel");
+  }
+
   game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
 }
 
@@ -90,9 +107,9 @@ function moveByKeys(event) {
   else if (event.key == "ArrowRight") moveRight();
   else if (event.key == "ArrowDown") moveDown();
 }
-
+//Funciones de movimiento
 function moveUp() {
-  if ((playerPosition.y - elementsSize + 1) < elementsSize) {
+  if (playerPosition.y - elementsSize + 1 < elementsSize) {
     console.log("OUT");
   } else {
     playerPosition.y -= elementsSize;
@@ -101,7 +118,7 @@ function moveUp() {
 }
 
 function moveLeft() {
-  if ((playerPosition.x - elementsSize + 1) < elementsSize) {
+  if (playerPosition.x - elementsSize + 1 < elementsSize) {
     console.log("OUT");
   } else {
     playerPosition.x -= elementsSize;
@@ -110,17 +127,16 @@ function moveLeft() {
 }
 
 function moveRight() {
-  if ((playerPosition.x + elementsSize - 1) > canvasSize) {
+  if (playerPosition.x + elementsSize - 1 > canvasSize) {
     console.log("OUT");
   } else {
     playerPosition.x += elementsSize;
     startGame();
   }
-
 }
 
 function moveDown() {
-  if ((playerPosition.y + elementsSize - 1) > canvasSize) {
+  if (playerPosition.y + elementsSize - 1 > canvasSize) {
     console.log("OUT");
   } else {
     playerPosition.y += elementsSize;
