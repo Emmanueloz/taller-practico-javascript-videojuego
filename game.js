@@ -7,6 +7,7 @@ const btnDown = document.querySelector("#down");
 
 let canvasSize;
 let elementsSize;
+let level = 0;
 
 const playerPosition = {
   x: undefined,
@@ -16,6 +17,8 @@ const giftPosition = {
   x: undefined,
   y: undefined,
 };
+
+let enemyPositions = [];
 
 window.addEventListener("load", setCanvasSize); //cuando termine de cargar
 window.addEventListener("resize", setCanvasSize); // nuevo tamaño de pantalla
@@ -43,16 +46,21 @@ function startGame() {
   game.font = `${elementsSize}px Verdana`; //Tamaño del emoji del tamaño del cuadrado
   game.textAlign = "end"; //Alineación del emoji
 
-  const map = maps[0]; //Mapa seleccionado
+  const map = maps[level]; //Mapa seleccionado
+  if (!map) {
+    gameWin();
+    return startGame()
+  }
   const mapRows = map.trim().split("\n"); //Filas del Mapa
   const mapRowCols = mapRows.map((row) => row.trim().split("")); //Array de arrays fila, elemento de la fila
-  /* .trim es una función que funciona en stings para 
+  /* .trim es una función que funciona en stings para
   quitar espacios, split es para crear un array a partir de 
   un string dividiendo por algún carácter en este casa 
   el "\n" que es un salto de linea */
   //console.log(mapRows, mapRowCols);
 
   //Recorremos el array para dibujarlo en el canvas
+  enemyPositions = [];
   game.clearRect(0, 0, canvasSize, canvasSize);
   mapRowCols.forEach((row, rowI) => {
     //primer forEach nos da el array de cada fila
@@ -71,6 +79,11 @@ function startGame() {
       } else if (col == "I") {
         giftPosition.x = posX;
         giftPosition.y = posY;
+      } else if (col == "X") {
+        enemyPositions.push({
+          x: posX,
+          y: posY,
+        });
       }
 
       game.fillText(emoji, posX, posY);
@@ -89,10 +102,36 @@ function movePlayer() {
   const giftCollision = giftCollisionX && giftCollisionY;
 
   if (giftCollision) {
-    console.log("Subiste de nivel");
+    levelWin();
+  }
+  /* El método .find de los arrays lo que devuelve el elemento que cumpla cierta condición, también
+  Podemos devolver un true o false si retornamosEl método .find de los arrays lo que devuelve el elemento que cumpla cierta condición, también
+  Podemos devolver un true o false si retornamos una validación una validación */
+  const enemyCollision = enemyPositions.find((enemy) => {
+    const enemyCollisionX = enemy.x.toFixed(3) == playerPosition.x.toFixed(3);
+    const enemyCollisionY = enemy.y.toFixed(3) == playerPosition.y.toFixed(3);
+
+    return enemyCollisionX && enemyCollisionY;
+  });
+
+  if (enemyCollision) {
+    console.log("Moriste :(");
   }
 
   game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
+}
+
+function levelWin() {
+  console.log("Subiste de nivel");
+  level++;
+  startGame();
+}
+
+function gameWin() {
+  console.log("Terminaste el juego");
+  playerPosition.x = undefined
+  playerPosition.y = undefined
+  level = 0
 }
 
 window.addEventListener("keydown", moveByKeys);
