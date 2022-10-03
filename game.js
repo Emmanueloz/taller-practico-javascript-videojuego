@@ -47,7 +47,8 @@ function startGame() {
   game.font = `${elementsSize}px Verdana`; //Tamaño del emoji del tamaño del cuadrado
   game.textAlign = "end"; //Alineación del emoji
 
-  const map = maps[level]; //Mapa seleccionado
+  const map = maps[level];
+  console.log(level); //Mapa seleccionado
   if (!map) {
     game.fillText(emojis["WIN"], playerPosition.x, playerPosition.y);
     gameWin();

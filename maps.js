@@ -1,18 +1,18 @@
 /*
  * Reglas:
  * El final de cada nivel debe ser el inicio del siguiente
-*/
+ */
 
 const emojis = {
-  '-': ' ',//Espacios en blanco
-  'O': '🚪',//Puertas a mas niveles
-  'X': '💣',//Bombas, Obstáculos
-  'I': '🎁',//Premios
-  'PLAYER': '💀',
-  'BOMB_COLLISION': '🔥',
-  'GAME_OVER': '👎',
-  'WIN': '🏆',
-  'HEART': '❤️',
+  "-": " ", //Espacios en blanco
+  O: "🚪", //Puertas a mas niveles
+  X: "💣", //Bombas, Obstáculos
+  I: "🎁", //Premios
+  PLAYER: "💀",
+  BOMB_COLLISION: "🔥",
+  GAME_OVER: "👎",
+  WIN: "🏆",
+  HEART: "❤️",
 };
 
 const maps = [];
@@ -52,3 +52,15 @@ maps.push(`
   XX-----OXX
   XXXXXXXXXX
 `);
+/* maps.push(`
+  O---XXXXXX
+  XX-XX--XXX
+  XX--XX-XXX
+  XX-XXX-XXX
+  -------XXX
+  -XXX--XXXX
+  -X-----XXX
+  XX-XXXXXXX
+  XX----XXXX
+  XXXXX----I
+`); */
