@@ -8,6 +8,7 @@ const btnDown = document.querySelector("#down");
 let canvasSize;
 let elementsSize;
 let level = 0;
+//let gameOverBool = false;
 
 const playerPosition = {
   x: undefined,
@@ -48,8 +49,9 @@ function startGame() {
 
   const map = maps[level]; //Mapa seleccionado
   if (!map) {
+    game.fillText(emojis["WIN"], playerPosition.x, playerPosition.y);
     gameWin();
-    return startGame()
+    return;
   }
   const mapRows = map.trim().split("\n"); //Filas del Mapa
   const mapRowCols = mapRows.map((row) => row.trim().split("")); //Array de arrays fila, elemento de la fila
@@ -90,7 +92,6 @@ function startGame() {
       //console.log({row, colI, col,rowI});
     });
   });
-
   movePlayer();
 }
 
@@ -115,10 +116,12 @@ function movePlayer() {
   });
 
   if (enemyCollision) {
-    console.log("Moriste :(");
+    gameOver();
+  } else if (giftCollision && !maps[level]) {
+    console.log("Funciona");
+  }else {
+    game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
   }
-
-  game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
 }
 
 function levelWin() {
@@ -129,9 +132,26 @@ function levelWin() {
 
 function gameWin() {
   console.log("Terminaste el juego");
-  playerPosition.x = undefined
-  playerPosition.y = undefined
-  level = 0
+  game.fillText(emojis["WIN"], playerPosition.x, playerPosition.y);
+  setTimeout(() => {
+    alert("Ganaste el juego, presione  Aceptar para reiniciar");
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
+    level = 0;
+    startGame();
+  }, 200);
+}
+
+function gameOver() {
+  console.log("Moriste :(");
+  game.fillText(emojis["BOMB_COLLISION"], playerPosition.x, playerPosition.y);
+  setTimeout(() => {
+    alert("Moriste, presiona Aceptar para reiniciar");
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
+    level = 0;
+    startGame();
+  }, 100);
 }
 
 window.addEventListener("keydown", moveByKeys);
