@@ -5,6 +5,7 @@ const btnLeft = document.querySelector("#left");
 const btnRight = document.querySelector("#right");
 const btnDown = document.querySelector("#down");
 const spanLives = document.querySelector("#lives");
+const spanTime = document.querySelector("#time");
 
 let canvasSize;
 let elementsSize;
@@ -149,6 +150,10 @@ function showLives() {
   heartsArray.forEach((heart) => spanLives.append(heart));
   //El método append agrega contenido a una etiqueta pero sin eliminar el contenido existente
   // Se pude usar el método de .repeat() en el array emojis, y colocarla como parámetro la variable lives que sera las veces que repita un elemento
+}
+
+function showTime() {
+  //
 }
 
 window.addEventListener("keydown", moveByKeys);
