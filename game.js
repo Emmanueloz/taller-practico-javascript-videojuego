@@ -4,13 +4,12 @@ const btnUp = document.querySelector("#up");
 const btnLeft = document.querySelector("#left");
 const btnRight = document.querySelector("#right");
 const btnDown = document.querySelector("#down");
-//const pVidas = document.getElementById("vidas");
+const spanLives = document.querySelector("#lives");
 
 let canvasSize;
 let elementsSize;
 let level = 0;
 let lives = 3;
-//pVidas.innerHTML = lives;
 
 const playerPosition = {
   x: undefined,
@@ -56,6 +55,8 @@ function startGame() {
   const mapRows = map.trim().split("\n");
   const mapRowCols = mapRows.map((row) => row.trim().split(""));
   console.log({ map, mapRows, mapRowCols });
+
+  showLives();
 
   enemyPositions = [];
   game.clearRect(0, 0, canvasSize, canvasSize);
@@ -131,11 +132,23 @@ function levelFail() {
   playerPosition.y = undefined;
   //pVidas.innerHTML = lives;
   console.log("Vidas: ", lives);
+
   startGame();
 }
 
 function gameWin() {
   console.log("¡Terminaste el juego!");
+}
+
+function showLives() {
+  const heartsArray = Array(lives).fill(emojis["HEART"]);
+  console.log(heartsArray);
+
+  spanLives.innerHTML = "";
+  
+  heartsArray.forEach((heart) => spanLives.append(heart));
+  //El método append agrega contenido a una etiqueta pero sin eliminar el contenido existente
+  // Se pude usar el método de .repeat() en el array emojis, y colocarla como parámetro la variable lives que sera las veces que repita un elemento
 }
 
 window.addEventListener("keydown", moveByKeys);
