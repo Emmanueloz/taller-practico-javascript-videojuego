@@ -150,8 +150,12 @@ function levelWin() {
 function gameWin() {
   console.log("Terminaste el juego");
   game.fillText(emojis["WIN"], playerPosition.x, playerPosition.y);
-  listTime.push(Date.now() - timeInit + "\n");
-  spanRecords.innerHTML = listTime.slice("")
+  spanRecords.innerHTML = "";
+  listTime.push(`${Date.now() - timeInit}\n`);
+  listTime.forEach((listTimeItem) => {
+    console.log(listTimeItem);
+    spanRecords.append(listTimeItem);
+  });
   timeInit = Date.now();
   clearInterval(showTime);
   setTimeout(() => {
