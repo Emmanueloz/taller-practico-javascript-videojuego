@@ -4,11 +4,17 @@ const btnUP = document.querySelector("#up");
 const btnLeft = document.querySelector("#left");
 const btnRight = document.querySelector("#right");
 const btnDown = document.querySelector("#down");
+const spanLives = document.querySelector("#lives");
+const spanTime = document.querySelector("#time");
+const spanRecords = document.querySelector("#records");
 
 let canvasSize;
 let elementsSize;
 let level = 0;
+let lives = 3;
+let timeInit = Date.now();
 //let gameOverBool = false;
+let listTime = [];
 
 const playerPosition = {
   x: undefined,
@@ -23,6 +29,12 @@ let enemyPositions = [];
 
 window.addEventListener("load", setCanvasSize); //cuando termine de cargar
 window.addEventListener("resize", setCanvasSize); // nuevo tamaño de pantalla
+
+function showTime() {
+  spanTime.innerHTML = Date.now() - timeInit;
+}
+
+setInterval(showTime);
 
 function setCanvasSize() {
   if (window.innerHeight > window.innerWidth) {
@@ -48,14 +60,18 @@ function startGame() {
   game.textAlign = "end"; //Alineación del emoji
 
   const map = maps[level];
-  console.log(level); //Mapa seleccionado
+  console.log("Nivel ", level); //Mapa seleccionado
   if (!map) {
     game.fillText(emojis["WIN"], playerPosition.x, playerPosition.y);
     gameWin();
+    setInterval(showTime);
     return;
   }
   const mapRows = map.trim().split("\n"); //Filas del Mapa
-  const mapRowCols = mapRows.map((row) => row.trim().split("")); //Array de arrays fila, elemento de la fila
+  const mapRowCols = mapRows.map((row) => row.trim().split(""));
+
+  showLives(); //Mostrar vidas en pantalla
+  //Array de arrays fila, elemento de la fila
   /* .trim es una función que funciona en stings para
   quitar espacios, split es para crear un array a partir de 
   un string dividiendo por algún carácter en este casa 
@@ -120,7 +136,7 @@ function movePlayer() {
     gameOver();
   } else if (giftCollision && !maps[level]) {
     console.log("Funciona");
-  }else {
+  } else {
     game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
   }
 }
@@ -134,25 +150,45 @@ function levelWin() {
 function gameWin() {
   console.log("Terminaste el juego");
   game.fillText(emojis["WIN"], playerPosition.x, playerPosition.y);
+  listTime.push(Date.now() - timeInit + "\n");
+  spanRecords.innerHTML = listTime.slice("")
+  timeInit = Date.now();
+  clearInterval(showTime);
   setTimeout(() => {
     alert("Ganaste el juego, presione  Aceptar para reiniciar");
     playerPosition.x = undefined;
     playerPosition.y = undefined;
     level = 0;
+    lives = 3;
     startGame();
   }, 200);
 }
 
 function gameOver() {
+  lives--;
   console.log("Moriste :(");
   game.fillText(emojis["BOMB_COLLISION"], playerPosition.x, playerPosition.y);
+  if (lives == 0) {
+    timeInit = Date.now();
+  }
+
   setTimeout(() => {
-    alert("Moriste, presiona Aceptar para reiniciar");
+    alert(
+      "Moriste te quedan " + lives + " vidas. presiona Aceptar para reiniciar"
+    );
     playerPosition.x = undefined;
     playerPosition.y = undefined;
-    level = 0;
+    if (lives == 0) {
+      level = 0;
+      lives = 3;
+    }
+    console.log("Vidas: ", lives, "Nivel ", level);
     startGame();
   }, 100);
+}
+
+function showLives() {
+  spanLives.innerHTML = emojis["HEART"].repeat(lives);
 }
 
 window.addEventListener("keydown", moveByKeys);
