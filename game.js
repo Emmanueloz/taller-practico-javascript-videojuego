@@ -12,9 +12,18 @@ let canvasSize;
 let elementsSize;
 let level = 0;
 let lives = 3;
-let timeInit = Date.now();
-//let gameOverBool = false;
-let listTime = [];
+
+let timeInit;
+let timePlayer;
+let timeInterval;
+
+let recordBefore = localStorage.getItem("record");
+
+if (recordBefore) {
+  spanRecords.innerHTML = recordBefore;
+}
+
+console.log(recordBefore);
 
 const playerPosition = {
   x: undefined,
@@ -29,12 +38,6 @@ let enemyPositions = [];
 
 window.addEventListener("load", setCanvasSize); //cuando termine de cargar
 window.addEventListener("resize", setCanvasSize); // nuevo tamaño de pantalla
-
-function showTime() {
-  spanTime.innerHTML = Date.now() - timeInit;
-}
-
-setInterval(showTime);
 
 function setCanvasSize() {
   if (window.innerHeight > window.innerWidth) {
@@ -64,13 +67,18 @@ function startGame() {
   if (!map) {
     game.fillText(emojis["WIN"], playerPosition.x, playerPosition.y);
     gameWin();
-    setInterval(showTime);
     return;
   }
   const mapRows = map.trim().split("\n"); //Filas del Mapa
   const mapRowCols = mapRows.map((row) => row.trim().split(""));
 
-  showLives(); //Mostrar vidas en pantalla
+  showLives();
+
+  if (!timeInit) {
+    timeInit = Date.now();
+    timeInterval = setInterval(showTime, 100);
+  }
+  //Mostrar vidas en pantalla
   //Array de arrays fila, elemento de la fila
   /* .trim es una función que funciona en stings para
   quitar espacios, split es para crear un array a partir de 
@@ -150,20 +158,16 @@ function levelWin() {
 function gameWin() {
   console.log("Terminaste el juego");
   game.fillText(emojis["WIN"], playerPosition.x, playerPosition.y);
-  spanRecords.innerHTML = "";
-  listTime.push(`${Date.now() - timeInit}\n`);
-  listTime.forEach((listTimeItem) => {
-    console.log(listTimeItem);
-    spanRecords.append(listTimeItem);
-  });
-  timeInit = Date.now();
-  clearInterval(showTime);
+
+  clearInterval(timeInterval);
+  showRecords();
   setTimeout(() => {
     alert("Ganaste el juego, presione  Aceptar para reiniciar");
     playerPosition.x = undefined;
     playerPosition.y = undefined;
     level = 0;
     lives = 3;
+    timeInit = undefined;
     startGame();
   }, 200);
 }
@@ -175,7 +179,6 @@ function gameOver() {
   if (lives == 0) {
     timeInit = Date.now();
   }
-
   setTimeout(() => {
     alert(
       "Moriste te quedan " + lives + " vidas. presiona Aceptar para reiniciar"
@@ -193,6 +196,21 @@ function gameOver() {
 
 function showLives() {
   spanLives.innerHTML = emojis["HEART"].repeat(lives);
+}
+
+function showTime() {
+  timePlayer = Date.now() - timeInit;
+  spanTime.innerHTML = timePlayer;
+}
+
+function showRecords() {
+  recordBefore = localStorage.getItem("record");
+  console.log(recordBefore);
+  if (timePlayer < recordBefore) {
+    localStorage.setItem("record", timePlayer);
+    console.log(localStorage.getItem("record"));
+    spanRecords.innerHTML = timePlayer;
+  }
 }
 
 window.addEventListener("keydown", moveByKeys);
