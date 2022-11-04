@@ -183,7 +183,7 @@ function moveByKeys(event) {
 function moveUp() {
   console.log("Me quiero mover hacia arriba");
 
-  if (playerPosition.y.toFixed(3) - elementsSize.toFixed(3) < elementsSize.toFixed(3)) {
+  if (playerPosition.y - elementsSize + 1 < elementsSize) {
     console.log("OUT");
   } else {
     playerPosition.y -= elementsSize;
@@ -193,7 +193,7 @@ function moveUp() {
 function moveLeft() {
   console.log("Me quiero mover hacia izquierda");
 
-  if (playerPosition.x.toFixed(3) - elementsSize.toFixed(3) < elementsSize.toFixed(3)) {
+  if (playerPosition.x - elementsSize + 1 < elementsSize) {
     console.log("OUT");
   } else {
     playerPosition.x -= elementsSize;
@@ -203,7 +203,7 @@ function moveLeft() {
 function moveRight() {
   console.log("Me quiero mover hacia derecha");
 
-  if (playerPosition.x.toFixed(3) + elementsSize.toFixed(3) > canvasSize.toFixed(3)) {
+  if (playerPosition.x + elementsSize - 1 > canvasSize) {
     console.log("OUT");
   } else {
     playerPosition.x += elementsSize;
@@ -213,7 +213,7 @@ function moveRight() {
 function moveDown() {
   console.log("Me quiero mover hacia abajo");
 
-  if (playerPosition.y.toFixed(3) + elementsSize.toFixed(3) > canvasSize.toFixed(3)) {
+  if (playerPosition.y + elementsSize + 1 > canvasSize) {
     console.log("OUT");
   } else {
     playerPosition.y += elementsSize;
@@ -221,4 +221,4 @@ function moveDown() {
   }
 }
 
-//Corregir el toFixed por un método de Math
+//Corregir el toFixed por no redondear
