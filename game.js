@@ -220,3 +220,5 @@ function moveDown() {
     startGame();
   }
 }
+
+//Corregir el toFixed por un método de Math
