@@ -19,6 +19,10 @@ let timeInterval;
 
 let recordBefore = localStorage.getItem("record");
 
+if (recordBefore == null) {
+  recordBefore =localStorage.setItem("record", 10000000)
+}
+
 if (recordBefore) {
   spanRecords.innerHTML = recordBefore;
 }
