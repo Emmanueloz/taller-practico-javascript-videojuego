@@ -33,10 +33,12 @@ window.addEventListener("resize", setCanvasSize);
 
 function setCanvasSize() {
   if (window.innerHeight > window.innerWidth) {
-    canvasSize = window.innerWidth * 0.8;
+    canvasSize = window.innerWidth * 0.7;
   } else {
-    canvasSize = window.innerHeight * 0.8;
+    canvasSize = window.innerHeight * 0.7;
   }
+
+  canvasSize = Number(canvasSize.toFixed(0))
 
   canvas.setAttribute("width", canvasSize);
   canvas.setAttribute("height", canvasSize);
@@ -206,7 +208,7 @@ function moveByKeys(event) {
 function moveUp() {
   console.log("Me quiero mover hacia arriba");
 
-  if (playerPosition.y - elementsSize + 1 < elementsSize) {
+  if ((playerPosition.y - elementsSize) < elementsSize) {
     console.log("OUT");
   } else {
     playerPosition.y -= elementsSize;
@@ -216,7 +218,7 @@ function moveUp() {
 function moveLeft() {
   console.log("Me quiero mover hacia izquierda");
 
-  if (playerPosition.x - elementsSize + 1 < elementsSize) {
+  if ((playerPosition.x - elementsSize) < elementsSize) {
     console.log("OUT");
   } else {
     playerPosition.x -= elementsSize;
@@ -226,7 +228,7 @@ function moveLeft() {
 function moveRight() {
   console.log("Me quiero mover hacia derecha");
 
-  if (playerPosition.x + elementsSize - 1 > canvasSize) {
+  if ((playerPosition.x + elementsSize) > canvasSize) {
     console.log("OUT");
   } else {
     playerPosition.x += elementsSize;
@@ -236,7 +238,7 @@ function moveRight() {
 function moveDown() {
   console.log("Me quiero mover hacia abajo");
 
-  if (playerPosition.y + elementsSize + 1 > canvasSize) {
+  if ((playerPosition.y + elementsSize)> canvasSize) {
     console.log("OUT");
   } else {
     playerPosition.y += elementsSize;
