@@ -8,6 +8,8 @@ const spanLives = document.querySelector("#lives");
 const spanTime = document.querySelector("#time");
 const spanRecords = document.querySelector("#records");
 const menuGame = document.querySelector("#menu-messages");
+const menuTitle = document.querySelector("#menu-title");
+const menuMessage = document.querySelector("#menu-message");
 
 let canvasSize;
 let elementsSize;
@@ -17,6 +19,7 @@ let lives = 3;
 let timeInit;
 let timePlayer;
 let timeInterval;
+let timeNow;
 
 let visibleMenu = false;
 
@@ -83,7 +86,7 @@ function startGame() {
 
   if (!timeInit) {
     timeInit = Date.now();
-    timeInterval = setInterval(showTime, 100);
+    timeInterval = setInterval(showTime, 1000);
   }
   //Mostrar vidas en pantalla
   //Array de arrays fila, elemento de la fila
@@ -162,46 +165,47 @@ function levelWin() {
   startGame();
 }
 
+function showRestart() {
+  playerPosition.x = undefined;
+  playerPosition.y = undefined;
+  if (lives > 0) {
+    timePlayer = Date.now() - timeNow;
+  }
+  showMenu();
+  startGame();
+}
+
 function gameWin() {
   console.log("Terminaste el juego");
   game.fillText(emojis["WIN"], playerPosition.x, playerPosition.y);
   showMenu();
   clearInterval(timeInterval);
+  level = 0;
+  lives = 3;
+  timeInit = undefined;
   showRecords();
-  setTimeout(() => {
-    alert("Ganaste el juego, presione  Aceptar para reiniciar");
-    playerPosition.x = undefined;
-    playerPosition.y = undefined;
-    level = 0;
-    lives = 3;
-    timeInit = undefined;
-    showMenu();
-    startGame();
-  }, 200);
+  menuTitle.innerHTML = "Ganaste el juego";
+  menuMessage.innerHTML = "Toca Reiniciar, para seguir jugando";
 }
 
 function gameOver() {
   lives--;
   console.log("Moriste :(");
+  //clearInterval(timeInterval);
   game.fillText(emojis["BOMB_COLLISION"], playerPosition.x, playerPosition.y);
   if (lives == 0) {
     timeInit = Date.now();
+    level = 0;
+    lives = 3;
+    menuTitle.innerHTML = "GameOver";
+    menuMessage.innerHTML = "Perdiste, toca reiniciar para volver a intentar";
+  } else {
+    menuTitle.innerHTML = "Moriste";
+    menuMessage.innerHTML = `Te queda ${lives} vidas, presiona Reiniciar para seguir intentando`;
+    console.log(timeInit, timePlayer);
+    /* timePlayer = timePlayer - timeNow; */
   }
   showMenu();
-  setTimeout(() => {
-    alert(
-      "Moriste te quedan " + lives + " vidas. presiona Aceptar para reiniciar"
-    );
-    playerPosition.x = undefined;
-    playerPosition.y = undefined;
-    if (lives == 0) {
-      level = 0;
-      lives = 3;
-    }
-    console.log("Vidas: ", lives, "Nivel ", level);
-    showMenu();
-    startGame();
-  }, 100);
 }
 
 function showLives() {
@@ -209,7 +213,8 @@ function showLives() {
 }
 
 function showTime() {
-  timePlayer = Date.now() - timeInit;
+  timeNow = Date.now();
+  timePlayer = timeNow - timeInit;
   spanTime.innerHTML = timePlayer;
 }
 

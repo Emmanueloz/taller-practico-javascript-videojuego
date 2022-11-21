@@ -71,6 +71,11 @@ p {
   border: 4px solid indigo;
   background-color: #dbd557;
   border-radius: 20px;
+  color: indigo;
+}
+
+.section-menu .button-menu{
+  margin-top: 20px;
 }
 
 @media (max-width: 440px) {
