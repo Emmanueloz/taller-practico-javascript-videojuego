@@ -7,6 +7,7 @@ const btnDown = document.querySelector("#down");
 const spanLives = document.querySelector("#lives");
 const spanTime = document.querySelector("#time");
 const spanRecords = document.querySelector("#records");
+const menuGame = document.querySelector("#menu-messages");
 
 let canvasSize;
 let elementsSize;
@@ -17,10 +18,12 @@ let timeInit;
 let timePlayer;
 let timeInterval;
 
+let visibleMenu = false;
+
 let recordBefore = localStorage.getItem("record");
 
 if (recordBefore == null) {
-  recordBefore =localStorage.setItem("record", 10000000)
+  recordBefore = localStorage.setItem("record", 10000000);
 }
 
 if (recordBefore) {
@@ -162,7 +165,7 @@ function levelWin() {
 function gameWin() {
   console.log("Terminaste el juego");
   game.fillText(emojis["WIN"], playerPosition.x, playerPosition.y);
-
+  showMenu();
   clearInterval(timeInterval);
   showRecords();
   setTimeout(() => {
@@ -172,6 +175,7 @@ function gameWin() {
     level = 0;
     lives = 3;
     timeInit = undefined;
+    showMenu();
     startGame();
   }, 200);
 }
@@ -183,6 +187,7 @@ function gameOver() {
   if (lives == 0) {
     timeInit = Date.now();
   }
+  showMenu();
   setTimeout(() => {
     alert(
       "Moriste te quedan " + lives + " vidas. presiona Aceptar para reiniciar"
@@ -194,6 +199,7 @@ function gameOver() {
       lives = 3;
     }
     console.log("Vidas: ", lives, "Nivel ", level);
+    showMenu();
     startGame();
   }, 100);
 }
@@ -214,6 +220,16 @@ function showRecords() {
     localStorage.setItem("record", timePlayer);
     console.log(localStorage.getItem("record"));
     spanRecords.innerHTML = timePlayer;
+  }
+}
+
+function showMenu() {
+  if (!visibleMenu) {
+    menuGame.style.display = "inline-block";
+    return (visibleMenu = true);
+  } else {
+    menuGame.style.display = "none";
+    return (visibleMenu = false);
   }
 }
 
