@@ -20,6 +20,7 @@ let timeInit;
 let timePlayer;
 let timeInterval;
 let timeNow;
+let timeRestart;
 
 let visibleMenu = false;
 
@@ -86,7 +87,7 @@ function startGame() {
 
   if (!timeInit) {
     timeInit = Date.now();
-    timeInterval = setInterval(showTime, 1000);
+    timeInterval = setInterval(showTime, 100);
   }
   //Mostrar vidas en pantalla
   //Array de arrays fila, elemento de la fila
@@ -168,8 +169,11 @@ function levelWin() {
 function showRestart() {
   playerPosition.x = undefined;
   playerPosition.y = undefined;
+  timeRestart = Date.now();
   if (lives > 0) {
-    timePlayer = Date.now() - timeNow;
+    timeInit = timeInit + (timeRestart - timeNow);
+    timeInterval = setInterval(showTime, 100);
+    console.log("Sigues vivos");
   }
   showMenu();
   startGame();
@@ -185,7 +189,7 @@ function gameWin() {
   timeInit = undefined;
   showRecords();
   menuTitle.innerHTML = "Ganaste el juego";
-  menuMessage.innerHTML = "Toca Reiniciar, para seguir jugando";
+  menuMessage.innerHTML = `Tu tiempo fue ${timePlayer}, te quedaron ${lives} vidas ❤️`;
 }
 
 function gameOver() {
@@ -199,11 +203,12 @@ function gameOver() {
     lives = 3;
     menuTitle.innerHTML = "GameOver";
     menuMessage.innerHTML = "Perdiste, toca reiniciar para volver a intentar";
+    clearInterval(timeInterval);
   } else {
     menuTitle.innerHTML = "Moriste";
     menuMessage.innerHTML = `Te queda ${lives} vidas, presiona Reiniciar para seguir intentando`;
     console.log(timeInit, timePlayer);
-    /* timePlayer = timePlayer - timeNow; */
+    clearInterval(timeInterval);
   }
   showMenu();
 }
