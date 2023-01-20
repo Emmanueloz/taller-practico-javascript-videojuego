@@ -184,12 +184,12 @@ function gameWin() {
   game.fillText(emojis["WIN"], playerPosition.x, playerPosition.y);
   showMenu();
   clearInterval(timeInterval);
-  level = 0;
-  lives = 3;
   timeInit = undefined;
   showRecords();
   menuTitle.innerHTML = "Ganaste el juego";
   menuMessage.innerHTML = `Tu tiempo fue ${timePlayer}, te quedaron ${lives} vidas ❤️`;
+  level = 0;
+  lives = 3;
 }
 
 function gameOver() {
