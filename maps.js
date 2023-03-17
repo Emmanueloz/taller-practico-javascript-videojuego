@@ -8,7 +8,7 @@ const emojis = {
   O: "🚪", //Puertas a mas niveles
   X: "💣", //Bombas, Obstáculos
   I: "🎁", //Premios
-  PLAYER: "💀",
+  PLAYER: "😈",
   BOMB_COLLISION: "🔥",
   GAME_OVER: "👎",
   WIN: "🏆",

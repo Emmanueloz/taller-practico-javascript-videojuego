@@ -34,8 +34,6 @@ if (recordBefore) {
   spanRecords.innerHTML = recordBefore;
 }
 
-console.log(recordBefore);
-
 const playerPosition = {
   x: undefined,
   y: undefined,
@@ -74,7 +72,7 @@ function startGame() {
   game.textAlign = "end"; //Alineación del emoji
 
   const map = maps[level];
-  console.log("Nivel ", level); //Mapa seleccionado
+  //console.log("Nivel ", level); //Mapa seleccionado
   if (!map) {
     game.fillText(emojis["WIN"], playerPosition.x, playerPosition.y);
     gameWin();
@@ -112,7 +110,7 @@ function startGame() {
         if (!playerPosition.x == !playerPosition.y) {
           playerPosition.x = posX;
           playerPosition.y = posY;
-          console.log(playerPosition, elementsSize);
+          //console.log(playerPosition, elementsSize);
         }
       } else if (col == "I") {
         giftPosition.x = posX;
@@ -154,14 +152,14 @@ function movePlayer() {
   if (enemyCollision) {
     gameOver();
   } else if (giftCollision && !maps[level]) {
-    console.log("Funciona");
+    //console.log("Funciona");
   } else {
     game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
   }
 }
 
 function levelWin() {
-  console.log("Subiste de nivel");
+  //console.log("Subiste de nivel");
   level++;
   startGame();
 }
@@ -173,14 +171,14 @@ function showRestart() {
   if (lives > 0) {
     timeInit = timeInit + (timeRestart - timeNow);
     timeInterval = setInterval(showTime, 100);
-    console.log("Sigues vivos");
+    //console.log("Sigues vivos");
   }
   showMenu();
   startGame();
 }
 
 function gameWin() {
-  console.log("Terminaste el juego");
+  //console.log("Terminaste el juego");
   game.fillText(emojis["WIN"], playerPosition.x, playerPosition.y);
   showMenu();
   clearInterval(timeInterval);
@@ -194,7 +192,7 @@ function gameWin() {
 
 function gameOver() {
   lives--;
-  console.log("Moriste :(");
+  //console.log("Moriste :(");
   //clearInterval(timeInterval);
   game.fillText(emojis["BOMB_COLLISION"], playerPosition.x, playerPosition.y);
   if (lives == 0) {
@@ -207,7 +205,7 @@ function gameOver() {
   } else {
     menuTitle.innerHTML = "Moriste";
     menuMessage.innerHTML = `Te queda ${lives} vidas, presiona Reiniciar para seguir intentando`;
-    console.log(timeInit, timePlayer);
+    //console.log(timeInit, timePlayer);
     clearInterval(timeInterval);
   }
   showMenu();
@@ -225,10 +223,10 @@ function showTime() {
 
 function showRecords() {
   recordBefore = localStorage.getItem("record");
-  console.log(recordBefore);
+  //console.log(recordBefore);
   if (timePlayer < recordBefore) {
     localStorage.setItem("record", timePlayer);
-    console.log(localStorage.getItem("record"));
+    //console.log(localStorage.getItem("record"));
     spanRecords.innerHTML = timePlayer;
   }
 }
@@ -236,12 +234,13 @@ function showRecords() {
 function showMenu() {
   if (!visibleMenu) {
     menuGame.style.display = "inline-block";
-    return (visibleMenu = true);
+    visibleMenu = true;
   } else {
     menuGame.style.display = "none";
-    return (visibleMenu = false);
+    visibleMenu = false;
   }
 }
+
 
 window.addEventListener("keydown", moveByKeys);
 btnUP.addEventListener("click", moveUp);
@@ -250,44 +249,54 @@ btnRight.addEventListener("click", moveRight);
 btnDown.addEventListener("click", moveDown);
 
 function moveByKeys(event) {
-  if (event.key == "ArrowUp") moveUp();
-  else if (event.key == "ArrowLeft") moveLeft();
-  else if (event.key == "ArrowRight") moveRight();
-  else if (event.key == "ArrowDown") moveDown();
+  console.log(visibleMenu);
+  if (event.keyCode == 38 || event.keyCode == 87) moveUp();
+  else if (event.keyCode == 37|| event.keyCode == 65) moveLeft();
+  else if (event.keyCode == 39|| event.keyCode == 68) moveRight();
+  else if (event.keyCode == 40|| event.keyCode == 83) moveDown();
 }
 //Funciones de movimiento
 function moveUp() {
-  if (playerPosition.y - elementsSize + 1 < elementsSize) {
-    console.log("OUT");
-  } else {
-    playerPosition.y -= elementsSize;
-    startGame();
+  if (!visibleMenu) {
+    if (playerPosition.y - elementsSize + 1 < elementsSize) {
+      //console.log("OUT");
+    } else {
+      playerPosition.y -= elementsSize;
+      startGame();
+    }
   }
+  
 }
 
 function moveLeft() {
-  if (playerPosition.x - elementsSize + 1 < elementsSize) {
-    console.log("OUT");
-  } else {
-    playerPosition.x -= elementsSize;
-    startGame();
+  if (!visibleMenu) {
+    if (playerPosition.x - elementsSize + 1 < elementsSize) {
+      //console.log("OUT");
+    } else {
+      playerPosition.x -= elementsSize;
+      startGame();
+    }
   }
 }
 
 function moveRight() {
-  if (playerPosition.x + elementsSize - 1 > canvasSize) {
-    console.log("OUT");
-  } else {
-    playerPosition.x += elementsSize;
-    startGame();
+  if (!visibleMenu) {
+    if (playerPosition.x + elementsSize - 1 > canvasSize) {
+      //console.log("OUT");
+    } else {
+      playerPosition.x += elementsSize;
+      startGame();
+    }
   }
 }
 
 function moveDown() {
-  if (playerPosition.y + elementsSize - 1 > canvasSize) {
-    console.log("OUT");
-  } else {
-    playerPosition.y += elementsSize;
-    startGame();
+  if(!visibleMenu){
+    if (playerPosition.y + elementsSize - 1 > canvasSize) {
+      //console.log("OUT");
+    } else {
+      playerPosition.y += elementsSize;
+      startGame();
+    }
   }
 }
