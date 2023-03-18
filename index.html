@@ -1,32 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Juego Online de carreras y calaveras</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="shortcut icon" href="controlador.png" type="image/x-icon">
-</head>
-<body>
-  <section class="game-container">
-    <canvas id="game"></canvas>
-    <section class="btns">
-      <button id="up" value="up">Arriba</button>
-      <button id="left">Izquierda</button>
-      <button id="right">Derecha</button>
-      <button id="down">Abajo</button>
-    </section>
-    <section class="messages">
-      <!-- TODO -->
-      <p>Vidas: <span id="lives"></span></p>
-      <p>Tiempo: <span id="time"></span></p>
-      <p>Record: <span id="record"></span></p>
-      <p id="result"></p>
-    </section>
-  </section>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Juego Online de carreras y calaveras</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" href="controlador.png" type="image/x-icon" />
+  </head>
+  <body>
+    <section class="game-container">
+      <canvas id="game"></canvas>
+      <section class="btns">
+        <button id="up" value="up">Arriba</button>
+        <button id="left">Izquierda</button>
+        <button id="right">Derecha</button>
+        <button id="down">Abajo</button>
+      </section>
+      <section class="messages">
+        <!-- TODO -->
+        <p>Vidas: <span id="lives"></span></p>
+        <p>Tiempo: <span id="time"></span></p>
 
-  <script src="maps.js"></script>
-  <script src="game.js"></script>
-</body>
+        <p>Record: <span id="record"></span></p>
+        <p id="result"></p>
+
+        <p>Records: <span id="records"></span></p>
+      </section>
+    </section>
+    <section class="section-menu" id="menu-messages">
+      <h3 id="menu-title"></h3>
+      <p id="menu-message"></p>
+      <button class="button-menu" type="button" onclick="showRestart()">
+        Reiniciar
+      </button>
+    </section>
+
+    <script src="maps.js"></script>
+    <script src="game.js"></script>
+  </body>
 </html>

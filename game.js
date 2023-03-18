@@ -6,17 +6,33 @@ const btnRight = document.querySelector("#right");
 const btnDown = document.querySelector("#down");
 const spanLives = document.querySelector("#lives");
 const spanTime = document.querySelector("#time");
-const spanRecord = document.querySelector("#record");
-const pResult = document.querySelector("#result");
+const spanRecords = document.querySelector("#records");
+const menuGame = document.querySelector("#menu-messages");
+const menuTitle = document.querySelector("#menu-title");
+const menuMessage = document.querySelector("#menu-message");
 
 let canvasSize;
 let elementsSize;
 let level = 0;
 let lives = 3;
 
-let timeStart;
+let timeInit;
 let timePlayer;
 let timeInterval;
+let timeNow;
+let timeRestart;
+
+let visibleMenu = false;
+
+let recordBefore = localStorage.getItem("record");
+
+if (recordBefore == null) {
+  recordBefore = localStorage.setItem("record", 10000000);
+}
+
+if (recordBefore) {
+  spanRecords.innerHTML = recordBefore;
+}
 
 const playerPosition = {
   x: undefined,
@@ -57,23 +73,27 @@ function startGame() {
   game.textAlign = "end";
 
   const map = maps[level];
-
+  //console.log("Nivel ", level); //Mapa seleccionado
   if (!map) {
     gameWin();
     return;
   }
-
-  if (!timeStart) {
-    timeStart = Date.now();
-    timeInterval = setInterval(showTime, 100);
-    showRecord()
-  }
-
-  const mapRows = map.trim().split("\n");
+  const mapRows = map.trim().split("\n"); //Filas del Mapa
   const mapRowCols = mapRows.map((row) => row.trim().split(""));
-  console.log({ map, mapRows, mapRowCols });
 
   showLives();
+
+  if (!timeInit) {
+    timeInit = Date.now();
+    timeInterval = setInterval(showTime, 100);
+  }
+  //Mostrar vidas en pantalla
+  //Array de arrays fila, elemento de la fila
+  /* .trim es una función que funciona en stings para
+  quitar espacios, split es para crear un array a partir de 
+  un string dividiendo por algún carácter en este casa 
+  el "\n" que es un salto de linea */
+  //console.log(mapRows, mapRowCols);
 
   enemyPositions = [];
   game.clearRect(0, 0, canvasSize, canvasSize);
@@ -88,7 +108,7 @@ function startGame() {
         if (!playerPosition.x && !playerPosition.y) {
           playerPosition.x = posX;
           playerPosition.y = posY;
-          console.log({ playerPosition });
+          //console.log(playerPosition, elementsSize);
         }
       } else if (col == "I") {
         giftPosition.x = posX;
@@ -125,73 +145,99 @@ function movePlayer() {
   });
 
   if (enemyCollision) {
-    levelFail();
+    gameOver();
+  } else if (giftCollision && !maps[level]) {
+    //console.log("Funciona");
+  } else {
+    game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
   }
 
   game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
 }
 
 function levelWin() {
-  console.log("Subiste de nivel");
+  //console.log("Subiste de nivel");
   level++;
   startGame();
 }
 
-function levelFail() {
-  console.log("Chocaste contra un enemigo :(");
-  lives--;
-  console.log("Vidas: ", lives);
-  if (lives <= 0) {
-    level = 0;
-    lives = 3;
-    clearInterval(timeInterval); //se detiene el tiempo anterior para volver a empezar
-    timeStart = undefined;
-  }
+function showRestart() {
   playerPosition.x = undefined;
   playerPosition.y = undefined;
-
+  timeRestart = Date.now();
+  if (lives > 0) {
+    timeInit = timeInit + (timeRestart - timeNow);
+    timeInterval = setInterval(showTime, 100);
+    //console.log("Sigues vivos");
+  }
+  showMenu();
   startGame();
 }
 
 function gameWin() {
-  console.log("¡Terminaste el juego!");
+  //console.log("Terminaste el juego");
+  game.fillText(emojis["WIN"], playerPosition.x, playerPosition.y);
+  showMenu();
   clearInterval(timeInterval);
+  timeInit = undefined;
+  showRecords();
+  menuTitle.innerHTML = "Ganaste el juego";
+  menuMessage.innerHTML = `Tu tiempo fue ${timePlayer}, te quedaron ${lives} vidas ❤️`;
+  level = 0;
+  lives = 3;
+}
 
-  const recordTime = localStorage.getItem("record_time");
-  const playerTime = Date.now() - timeStart;
-
-  if (recordTime) {
-    if (recordTime >= playerTime) {
-      localStorage.setItem("record_time", playerTime);
-      pResult.innerHTML = "Superaste el record!!! :)";
-    } else {
-      pResult.innerHTML ="Lo siento, no superaste el record :("
-    }
+function gameOver() {
+  lives--;
+  //console.log("Moriste :(");
+  //clearInterval(timeInterval);
+  game.fillText(emojis["BOMB_COLLISION"], playerPosition.x, playerPosition.y);
+  if (lives == 0) {
+    timeInit = Date.now();
+    level = 0;
+    lives = 3;
+    menuTitle.innerHTML = "GameOver";
+    menuMessage.innerHTML = "Perdiste, toca reiniciar para volver a intentar";
+    clearInterval(timeInterval);
   } else {
-    localStorage.setItem("record_time", playerTime);
-    pResult.innerHTML = 'Primera vez?, ahora intenta superar tu record'
+    menuTitle.innerHTML = "Moriste";
+    menuMessage.innerHTML = `Te queda ${lives} vidas, presiona Reiniciar para seguir intentando`;
+    //console.log(timeInit, timePlayer);
+    clearInterval(timeInterval);
   }
-  console.log({ recordTime, playerTime });
+  showMenu();
 }
 
 function showLives() {
-  const heartsArray = Array(lives).fill(emojis["HEART"]);
-  console.log(heartsArray);
-
-  spanLives.innerHTML = "";
-
-  heartsArray.forEach((heart) => spanLives.append(heart));
-  //El método append agrega contenido a una etiqueta pero sin eliminar el contenido existente
-  // Se pude usar el método de .repeat() en el array emojis, y colocarla como parámetro la variable lives que sera las veces que repita un elemento
+  spanLives.innerHTML = emojis["HEART"].repeat(lives);
 }
 
 function showTime() {
-  spanTime.innerHTML = Date.now() - timeStart;
+  timeNow = Date.now();
+  timePlayer = timeNow - timeInit;
+  spanTime.innerHTML = timePlayer;
 }
 
-function showRecord() {
-  spanRecord.innerHTML = localStorage.getItem('record_time');
+function showRecords() {
+  recordBefore = localStorage.getItem("record");
+  //console.log(recordBefore);
+  if (timePlayer < recordBefore) {
+    localStorage.setItem("record", timePlayer);
+    //console.log(localStorage.getItem("record"));
+    spanRecords.innerHTML = timePlayer;
+  }
 }
+
+function showMenu() {
+  if (!visibleMenu) {
+    menuGame.style.display = "inline-block";
+    visibleMenu = true;
+  } else {
+    menuGame.style.display = "none";
+    visibleMenu = false;
+  }
+}
+
 
 window.addEventListener("keydown", moveByKeys);
 btnUp.addEventListener("click", moveUp);
@@ -200,50 +246,54 @@ btnRight.addEventListener("click", moveRight);
 btnDown.addEventListener("click", moveDown);
 
 function moveByKeys(event) {
-  if (event.key == "ArrowUp") moveUp();
-  else if (event.key == "ArrowLeft") moveLeft();
-  else if (event.key == "ArrowRight") moveRight();
-  else if (event.key == "ArrowDown") moveDown();
+  console.log(visibleMenu);
+  if (event.keyCode == 38 || event.keyCode == 87) moveUp();
+  else if (event.keyCode == 37|| event.keyCode == 65) moveLeft();
+  else if (event.keyCode == 39|| event.keyCode == 68) moveRight();
+  else if (event.keyCode == 40|| event.keyCode == 83) moveDown();
 }
 function moveUp() {
-  console.log("Me quiero mover hacia arriba");
+  if (!visibleMenu) {
+    console.log("Me quiero mover hacia arriba");
 
   if ((playerPosition.y - elementsSize) < elementsSize) {
-    console.log("OUT");
-  } else {
-    playerPosition.y -= elementsSize;
-    startGame();
+      //console.log("OUT");
+    } else {
+      playerPosition.y -= elementsSize;
+      startGame();
+    }
   }
-}
+  }
+
 function moveLeft() {
-  console.log("Me quiero mover hacia izquierda");
-
-  if ((playerPosition.x - elementsSize) < elementsSize) {
-    console.log("OUT");
-  } else {
-    playerPosition.x -= elementsSize;
-    startGame();
+  if (!visibleMenu) {
+    if (playerPosition.x - elementsSize + 1 < elementsSize) {
+      //console.log("OUT");
+    } else {
+      playerPosition.x -= elementsSize;
+      startGame();
+    }
   }
 }
+
 function moveRight() {
-  console.log("Me quiero mover hacia derecha");
-
-  if ((playerPosition.x + elementsSize) > canvasSize) {
-    console.log("OUT");
-  } else {
-    playerPosition.x += elementsSize;
-    startGame();
+  if (!visibleMenu) {
+    if (playerPosition.x + elementsSize - 1 > canvasSize) {
+      //console.log("OUT");
+    } else {
+      playerPosition.x += elementsSize;
+      startGame();
+    }
   }
 }
+
 function moveDown() {
-  console.log("Me quiero mover hacia abajo");
-
-  if ((playerPosition.y + elementsSize)> canvasSize) {
-    console.log("OUT");
-  } else {
-    playerPosition.y += elementsSize;
-    startGame();
+  if(!visibleMenu){
+    if (playerPosition.y + elementsSize - 1 > canvasSize) {
+      //console.log("OUT");
+    } else {
+      playerPosition.y += elementsSize;
+      startGame();
+    }
   }
 }
-
-//Corregir el toFixed por no redondear
