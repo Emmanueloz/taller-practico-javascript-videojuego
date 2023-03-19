@@ -9,21 +9,29 @@
     <link
       rel="stylesheet"
       href="css/desktop.css"
-      media="screen and (min-width: 600px)"
+      media="screen and (min-width: 700px)"
     />
     <link rel="shortcut icon" href="controlador.png" type="image/x-icon" />
   </head>
   <body>
     <header class="state-bar">
       <section class="state">
-        <button>
-          <p id="state-game"></p>
-        </button>
+        <button id="state-game">Pausar</button>
       </section>
       <section class="messages">
-        <p>Vidas: <span id="lives"></span></p>
-        <p>Tiempo: <span id="time"></span></p>
-        <p>Records: <span id="records"></span></p>
+        <p>
+          <b>Vidas:</b>
+          <span id="lives"></span>
+        </p>
+        <p>
+          <b>Tiempo:</b>
+          <br />
+          <span id="time"></span>
+        </p>
+        <p>
+          <b>Records:</b>
+          <span id="records"></span>
+        </p>
       </section>
     </header>
     <main>
@@ -46,11 +54,14 @@
         </div>
       </section>
     </main>
+    <footer>
+      <a href="index.html" class="exit">Salir</a>
+    </footer>
 
     <script src="javascript/maps.js"></script>
     <script src="javascript/functionGame.js"></script>
     <script src="javascript/loopGame.js"></script>
     <script src="javascript/control.js"></script>
-    <script src="javascript/records.js"></script>
+    <script src="javascript/timeGame.js"></script>
   </body>
 </html>

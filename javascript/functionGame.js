@@ -1,5 +1,5 @@
 function startGame() {
-  console.log({ canvasSize, elementsSize });
+  //console.log({ canvasSize, elementsSize });
 
   game.font = elementsSize + "px Verdana";
   game.textAlign = "end";

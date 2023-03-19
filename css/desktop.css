@@ -3,11 +3,14 @@
   height: 8vh;
 }
 
-
 .state-bar .messages {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.state-bar .messages p br{
+  display: block;
 }
 
 .btns {

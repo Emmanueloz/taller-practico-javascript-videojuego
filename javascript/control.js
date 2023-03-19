@@ -13,9 +13,8 @@ function moveByKeys(event) {
 }
 function moveUp() {
   if (!visibleMenu) {
-    console.log("Me quiero mover hacia arriba");
 
-  if ((playerPosition.y - elementsSize) < elementsSize) {
+  if ((playerPosition.y - elementsSize + 1) < elementsSize) {
       //console.log("OUT");
     } else {
       playerPosition.y -= elementsSize;
