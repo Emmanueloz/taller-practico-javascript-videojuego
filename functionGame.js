@@ -1,71 +1,3 @@
-const canvas = document.querySelector("#game");
-const game = canvas.getContext("2d");
-const btnUp = document.querySelector("#up");
-const btnLeft = document.querySelector("#left");
-const btnRight = document.querySelector("#right");
-const btnDown = document.querySelector("#down");
-const spanLives = document.querySelector("#lives");
-const spanTime = document.querySelector("#time");
-const spanRecords = document.querySelector("#records");
-const menuGame = document.querySelector("#menu-messages");
-const menuTitle = document.querySelector("#menu-title");
-const menuMessage = document.querySelector("#menu-message");
-
-let canvasSize;
-let elementsSize;
-let level = 0;
-let lives = 3;
-
-let timeInit;
-let timePlayer;
-let timeInterval;
-let timeNow;
-let timeRestart;
-
-let visibleMenu = false;
-
-let recordBefore = localStorage.getItem("record");
-
-if (recordBefore == null) {
-  recordBefore = localStorage.setItem("record", 10000000);
-}
-
-if (recordBefore) {
-  spanRecords.innerHTML = recordBefore;
-}
-
-const playerPosition = {
-  x: undefined,
-  y: undefined,
-};
-const giftPosition = {
-  x: undefined,
-  y: undefined,
-};
-let enemyPositions = [];
-
-window.addEventListener("load", setCanvasSize);
-window.addEventListener("resize", setCanvasSize);
-
-function setCanvasSize() {
-  if (window.innerHeight > window.innerWidth) {
-    canvasSize = window.innerWidth * 0.7;
-  } else {
-    canvasSize = window.innerHeight * 0.7;
-  }
-
-  canvasSize = Number(canvasSize.toFixed(0))
-
-  canvas.setAttribute("width", canvasSize);
-  canvas.setAttribute("height", canvasSize);
-
-  elementsSize = canvasSize / 10;
-  playerPosition.x = undefined;
-  playerPosition.y = undefined;
-
-  startGame();
-}
-
 function startGame() {
   console.log({ canvasSize, elementsSize });
 
@@ -87,13 +19,7 @@ function startGame() {
     timeInit = Date.now();
     timeInterval = setInterval(showTime, 100);
   }
-  //Mostrar vidas en pantalla
-  //Array de arrays fila, elemento de la fila
-  /* .trim es una función que funciona en stings para
-  quitar espacios, split es para crear un array a partir de 
-  un string dividiendo por algún carácter en este casa 
-  el "\n" que es un salto de linea */
-  //console.log(mapRows, mapRowCols);
+
 
   enemyPositions = [];
   game.clearRect(0, 0, canvasSize, canvasSize);
@@ -235,65 +161,5 @@ function showMenu() {
   } else {
     menuGame.style.display = "none";
     visibleMenu = false;
-  }
-}
-
-
-window.addEventListener("keydown", moveByKeys);
-btnUp.addEventListener("click", moveUp);
-btnLeft.addEventListener("click", moveLeft);
-btnRight.addEventListener("click", moveRight);
-btnDown.addEventListener("click", moveDown);
-
-function moveByKeys(event) {
-  console.log(visibleMenu);
-  if (event.keyCode == 38 || event.keyCode == 87) moveUp();
-  else if (event.keyCode == 37|| event.keyCode == 65) moveLeft();
-  else if (event.keyCode == 39|| event.keyCode == 68) moveRight();
-  else if (event.keyCode == 40|| event.keyCode == 83) moveDown();
-}
-function moveUp() {
-  if (!visibleMenu) {
-    console.log("Me quiero mover hacia arriba");
-
-  if ((playerPosition.y - elementsSize) < elementsSize) {
-      //console.log("OUT");
-    } else {
-      playerPosition.y -= elementsSize;
-      startGame();
-    }
-  }
-  }
-
-function moveLeft() {
-  if (!visibleMenu) {
-    if (playerPosition.x - elementsSize + 1 < elementsSize) {
-      //console.log("OUT");
-    } else {
-      playerPosition.x -= elementsSize;
-      startGame();
-    }
-  }
-}
-
-function moveRight() {
-  if (!visibleMenu) {
-    if (playerPosition.x + elementsSize - 1 > canvasSize) {
-      //console.log("OUT");
-    } else {
-      playerPosition.x += elementsSize;
-      startGame();
-    }
-  }
-}
-
-function moveDown() {
-  if(!visibleMenu){
-    if (playerPosition.y + elementsSize - 1 > canvasSize) {
-      //console.log("OUT");
-    } else {
-      playerPosition.y += elementsSize;
-      startGame();
-    }
   }
 }
