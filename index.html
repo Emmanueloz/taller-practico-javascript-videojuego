@@ -5,37 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Juego Online de carreras y calaveras</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/desktop.css" media="screen and (min-width: 600px)">
     <link rel="shortcut icon" href="controlador.png" type="image/x-icon" />
   </head>
   <body>
-    <section class="game-container">
-      <canvas id="game"></canvas>
-      <section class="btns">
-        <button id="up" value="up">Arriba</button>
-        <button id="left">Izquierda</button>
-        <button id="right">Derecha</button>
-        <button id="down">Abajo</button>
+    <header>
+      <h1>Bienvenido al juego de</h1>
+    </header>
+    <main>
+      <h2>Selecciona tu nombre y tu jugador</h2>
+      <form class="form-playe">
+        <label for="">
+          <samp>Como te llamas?</samp>
+          <input type="text" id="namePlayer">
+          <br>
+          <button>Enviar</button>
+        </label>
+      </form>
+      <section>
+        for
       </section>
-      <section class="messages">
-        <!-- TODO -->
-        <p>Vidas: <span id="lives"></span></p>
-        <p>Tiempo: <span id="time"></span></p>
-        <p>Records: <span id="records"></span></p>
-      </section>
-    </section>
-    <section class="section-menu" id="menu-messages">
-      <h3 id="menu-title"></h3>
-      <p id="menu-message"></p>
-      <button class="button-menu" type="button" onclick="showRestart()">
-        Reiniciar
-      </button>
-    </section>
-
-    <script src="maps.js"></script>
-    <script src="functionGame.js"></script>
-    <script src="loopGame.js"></script>
-    <script src="control.js"></script>
-    <script src="records.js"></script>
+    </main>
   </body>
 </html>

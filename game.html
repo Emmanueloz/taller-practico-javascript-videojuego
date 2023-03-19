@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Juego Online de carreras y calaveras</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="css/desktop.css"
+      media="screen and (min-width: 600px)"
+    />
+    <link rel="shortcut icon" href="controlador.png" type="image/x-icon" />
+  </head>
+  <body>
+    <header class="state-bar">
+      <section class="state">
+        <button>
+          <p id="state-game"></p>
+        </button>
+      </section>
+      <section class="messages">
+        <p>Vidas: <span id="lives"></span></p>
+        <p>Tiempo: <span id="time"></span></p>
+        <p>Records: <span id="records"></span></p>
+      </section>
+    </header>
+    <main>
+      <section class="game-container">
+        <canvas id="game"></canvas>
+        <section class="btns">
+          <button id="up" value="up">Arriba</button>
+          <button id="left">Izquierda</button>
+          <button id="right">Derecha</button>
+          <button id="down">Abajo</button>
+        </section>
+      </section>
+      <section class="section-menu" id="menu-messages">
+        <div class="menu-container">
+          <h3 id="menu-title"></h3>
+          <p id="menu-message"></p>
+          <button class="button-menu" type="button" onclick="showRestart()">
+            Reiniciar
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <script src="javascript/maps.js"></script>
+    <script src="javascript/functionGame.js"></script>
+    <script src="javascript/loopGame.js"></script>
+    <script src="javascript/control.js"></script>
+    <script src="javascript/records.js"></script>
+  </body>
+</html>

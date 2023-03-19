@@ -1,0 +1,56 @@
+.state-bar {
+  background-color: #35005a;
+  height: 8vh;
+}
+
+
+.state-bar .messages {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btns {
+  /* display: none; */
+  display: none;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  width: 100%;
+}
+
+button:not(:last-child) {
+  margin-right: 10px;
+}
+
+p {
+  display: block;
+  margin: 0;
+  width: 100%;
+}
+
+.section-menu {
+  display: none;
+  position: absolute;
+  top: 30vh;
+  left: 35vw;
+  width: 30vw;
+  min-height: 40vh;
+  padding: 10px;
+  border: 4px solid indigo;
+  background-color: #dbd557;
+  border-radius: 20px;
+  color: indigo;
+}
+
+.section-menu #menu-title {
+  font-size: 2rem;
+}
+
+.section-menu #menu-message {
+  font-size: 1.8rem;
+}
+
+.section-menu .button-menu {
+  margin-top: 20px;
+}
